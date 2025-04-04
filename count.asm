@@ -1,0 +1,49 @@
+DATA SEGMENT
+COUNT EQU 10
+BUP DB 'adhhJS8736'
+A DB 0
+B DB 0
+C DB 0
+D DB 0
+DATA ENDS
+
+CODE SEGMENT
+     ASSUME CS:CODE, DS:DATA
+START:MOV AX,DATA
+      MOV DS,AX
+      MOV AL,0 ;数字的个数
+      MOV AH,0 ;大写字母的个数
+      MOV BL,0 ;小写字母的个数
+      MOV BH,0 ;其他字符的个数
+      MOV CX,COUNT
+      LEA SI,BUP
+LOP:  CMP BYTE PTR[SI],30H
+      JB NEXT3
+      CMP BYTE PTR[SI],39H
+      JA NEXT1
+      INC AL
+      JMP NEXT4
+NEXT1:CMP BYTE PTR[SI],41H
+      JB NEXT3
+      CMP BYTE PTR[SI],5AH
+      JA NEXT2
+      INC AH
+      JMP NEXT4
+NEXT2:CMP BYTE PTR[SI],61H
+      JB NEXT3
+      CMP BYTE PTR[SI],7AH
+      JA NEXT3
+      INC BL
+      JMP NEXT4
+NEXT3:INC BH
+NEXT4:INC SI
+      LOOP LOP
+      MOV A,AL
+      MOV B,AH
+      MOV C,BL
+      MOV D,BH
+      MOV AH,4CH
+      INT 21H
+CODE  ENDS
+      END START
+
